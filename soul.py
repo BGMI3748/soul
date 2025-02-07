@@ -292,7 +292,7 @@ def handle_bgmi(message):
             if time > 120:
                 response = "GAND DEGA KYA ITNA JADA SECOND LAGA KE 120 SEC LAGA "
             else:
-                record_command_logs(user_id, '/soul', target, port, time)
+                record_command_logs(user_id, '/soulcracks', target, port, time)
                 log_command(user_id, target, port, time)
                 start_attack_reply(message, target, port, time)
                 full_command = f"./soul {target} {port} {time}"
