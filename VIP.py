@@ -3,8 +3,9 @@ import subprocess
 import datetime
 import os
 
-bot = telebot.TeleBot('7824390469:AAG6YaSxzd6gHIl5vA5eBOjUAsByPwPiJ9U')
-
+#bot = telebot.TeleBot('7824390469:AAG6YaSxzd6gHIl5vA5eBOjUAsByPwPiJ9U')
+TOKEN = os.getenv("soulcracks")
+bot = telebot.TeleBot(TOKEN)
 admin_id = ["8024976227","6312238286"]
 USER_FILE = "users.txt"
 
