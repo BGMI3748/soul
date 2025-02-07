@@ -5,10 +5,10 @@ import os
 #from flask import Flask
 
 # insert your Telegram bot token here
-bot = telebot.TeleBot('7299648603:AAHYbK4UU2wUh-5K2G8fX5gpavoIRCJsQH4')
+bot = telebot.TeleBot('7824390469:AAG6YaSxzd6gHIl5vA5eBOjUAsByPwPiJ9U')
 
 # Admin user IDs
-admin_id = ["6312238286","6312238286"]
+admin_id = ["8024976227","6312238286"]
 
 # File to store allowed user IDs
 USER_FILE = "users.txt"
