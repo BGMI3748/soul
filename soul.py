@@ -3,8 +3,8 @@ import subprocess
 import datetime
 import os
 
-bot = telebot.TeleBot('7824390469:AAG6YaSxzd6gHIl5vA5eBOjUAsByPwPiJ9U')
-admin_id = ["8024976227","6312238286"]
+bot = telebot.TeleBot('78243904')
+admin_id = ["80249","6312238286"]
 USER_FILE = "users.txt"
 
 LOG_FILE = "log.txt"
@@ -36,7 +36,7 @@ allowed_user_ids = read_users()
 
 
 def log_command(user_id, target, port, time):
-    admin_id = ["8024976227"]
+    admin_id = ["8024"]
     user_info = bot.get_chat(user_id)
     if user_info.username:
         username = "@" + user_info.username
